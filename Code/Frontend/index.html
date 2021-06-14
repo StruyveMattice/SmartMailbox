@@ -75,7 +75,7 @@
               </div>
             </div>
           </div>
-          <div class="o-layout__item u-1-of-2-bp3">
+          <div class="o-layout__item u-1-of-2-bp3 o-layout--top">
             <div class="c-card">
               <?xml version="1.0" encoding="iso-8859-1"?>
               <!-- Generator: Adobe Illustrator 19.0.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
@@ -236,18 +236,21 @@
     <section class="o-row">
       <div class="o-container">
         <div class="c-card">
-          <h3 class="u-center">Door</h3>
-          <p class="js-status-door">Door is closed</p>
-          <input class="js-input-code c-input" pattern="[0-9] {4}" type="text" placeholder="Code">
-          <p>
+          <h3 class="u-center u-sm-margin">Door</h3>
+          <p class="js-status-door u-sm-margin">Door is closed</p>
+    
+          <input class="js-input-code u-sm-margin c-input" maxlength="4"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');" type="text" placeholder="Code">
+          <p class="u-sm-margin">
             <a class="c-link-cta js-door-button" href="#!">Open Door</a>
           </p>
+          <a class='u-sm-margin' target="_blank" href="settings.html">Create new code</a>
         </div>
       </div>
     </section>
     <section class="o-row">
       <div class="o-container">
-        <div class="o-layout o-layout--align-center">
+        <div class="o-layout o-layout--align-center c-graph">
           <div class="o-layout__item">
             <h1 class="u-center">History</h1>
           </div>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="x-ua-compatible" content="ie=edge" />
+    <title>Mattice Struyve - Smart Mailbox</title>
+    <meta name="description" content="This is my MCT Project One." />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#44c8f5" />
+
+    <link rel="icon" href="favicon.svg" />
+    <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+    <link rel="manifest" href="manifest.json" />
+
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"
+      integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+    <link
+      href="https://fonts.googleapis.com/css?family=Archivo:600,700|PT+Serif:400,400i|Permanent+Marker&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./css/normalize.css" />
+    <link rel="stylesheet" href="./css/screen.css" />
+
+    <script
+      src="https://cdn.socket.io/4.1.1/socket.io.min.js"
+      integrity="sha384-cdrFIqe3RasCMNE0jeFG9xJHog/tgOVC1E9Lzve8LQN1g5WUHo0Kvk1mawWjxX7a"
+      crossorigin="anonymous"
+    ></script>
+
+    <script src="script/settings.js"></script>
+  </head>
+  <body>
+    <header class="o-row">
+      <h1 class="c-title">Settings</h1>
+    </header>
+
+    <section class="o-row o-row__top">
+      <div class="o-container">
+        <div class="c-card">
+          <h3 class="u-center">Change Code</h3>
+          <input
+            class="js-input-new-code c-input__new"
+            type="text"
+            pattern="[0-9]"
+            placeholder="New 4 digit code"
+            maxlength="4"
+            oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');"
+          />
+          <p>
+            <a class="c-link-cta js-code-submit" href="#!">Submit</a>
+          </p>
+        </div>
+      </div>
+    </section>
+  </body>
+</html>

@@ -37,6 +37,7 @@ KEYPAD = [
 ]
 
 typed_code = []
+rfid_code = ['10']
 status_door = False
 ROW_PINS = [0, 5, 6, 14]  # BCM numbering
 COL_PINS = [15, 18, 2, 3]  # BCM numbering
@@ -57,18 +58,19 @@ def setup():
 def check_code(key):
     global lcd
     global status_door
+    print(rfid_code)
     print(key)
-    rfid_code = [8, 7, 9, 0]
     typed_code.append(key)
     if key == 'D':
         typed_code.clear()
     if key == 'A':
         lcd.reset()
-        lcd.send_string("Local IP Address", False)
-        lcd.send_string(get_ip(), True)
-        time.sleep(5)
     if key == 'B':
-        lcd.reset()
+        lcd.send_string(f"Temp: {read_temp()} C", False)
+        lcd.send_string(f"Rain: {read_rain()} %", True)
+    if key == 'C':
+        lcd.send_string("Smart Mailbox", False)
+        lcd.send_string(get_ip(), True)
     if typed_code == rfid_code and status_door == False:
         open_door()
         typed_code.clear()
@@ -105,6 +107,10 @@ def update_timestamp():
         time.sleep(300)
 
 
+thread = threading.Timer(2, update_timestamp)
+thread.start()
+
+
 def read_history():
     return DataRepository.read_history()
 
@@ -136,6 +142,7 @@ def SetDuty(dutycycle):
 def open_door():
     SetDuty(10)
     print("Door open")
+    socketio.emit("B2F_door_opened")
 
 
 def close_door():
@@ -240,20 +247,27 @@ def init():
 # ANDERE FUNCTIES
 
 
+@ socketio.on('F2B_new_code')
+def init(new_code):
+    rfid_code.clear()
+    for x in new_code:
+        rfid_code.append(int(x))
+    socketio.emit("B2F_new_code", {'newRfidCode': new_code})
+
+
 def main():
     global lcd
     lcd = LCD(pins, clock, rs)
     lcd.init_lcd()
     lcd.display_on()
     lcd.reset()
-    # ip = get_ip()
     DataRepository.project_on()
     DataRepository.component_off(7)
     print("main wordt uigevoerd")
-    # lcd.send_string('Local IP Address:', False)
-    # lcd.send_string(ip, True)
     time.sleep(3)
     lcd.reset()
+    lcd.send_string("Smart Mailbox", False)
+    lcd.send_string(get_ip(), True)
     while True:
         status_rain = read_rain()
         status_temp = read_temp()
@@ -262,16 +276,16 @@ def main():
             'currentRain': status_rain})
         socketio.emit('B2F_status_temp', {
             'currentTemp': status_temp})
-        lcd.send_string(f"Temp {status_temp} C", False)
-        lcd.send_string(f"{status_rain}% regen", True)
         if float(waarde_ldr) < 70.0:
             print("Mail Delivered")
             lcd.reset()
             lcd.send_string("Mail delivered", False)
             update_history(0)
             socketio.emit('B2F_mail_delivered', {'isMail': True})
-            lcd.reset()
             time.sleep(3)
+            lcd.reset()
+            lcd.send_string("Smart Mailbox", False)
+            lcd.send_string(get_ip(), True)
 
 
 thread = threading.Timer(2, main)

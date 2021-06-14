@@ -2,13 +2,14 @@ const lanIP = `${window.location.hostname}:5000`;
 const socket = io(`http://${lanIP}`);
 Chart.defaults.global.defaultFontColor = "#fff";
 
-let html_rain, html_temperature, html_status_door,html_status_mail, html_code, btn_door;
+let html_rain, html_temperature, html_status_door,html_status_mail, html_code,html_new_code,btn_submit, btn_door, newRfidCode;
 let currentRain, currentTemp , isMail;
 
 
 const listenToUI = function () {
   btn_door.addEventListener("click", function () {
-    if (btn_door.innerHTML == "Open Door" && html_code.value == "8790") {
+    console.log(newRfidCode)
+    if (btn_door.innerHTML == "Open Door" && html_code.value == newRfidCode) {
       socket.emit('F2B_deur_open')
       btn_door.innerHTML = "Close Door"
       html_status_door.innerHTML = "Door is open"
@@ -16,7 +17,7 @@ const listenToUI = function () {
       html_code.value = ""
     }
 
-    else if (btn_door.innerHTML == "Close Door" && html_code.value == "8790") {
+    else if (btn_door.innerHTML == "Close Door" && html_code.value == newRfidCode) {
       socket.emit('F2B_deur_toe')
       btn_door.innerHTML = "Open Door"
       html_status_door.innerHTML = "Door is closed"
@@ -26,7 +27,6 @@ const listenToUI = function () {
     else {
       console.log("Invalid Code")
     }
-
   })
 
 };
@@ -36,9 +36,18 @@ const listenToSocket = function () {
     console.log("Verbonden met de socket");
   });
 
+  socket.on('B2F_new_code', function (value) {
+    newRfidCode = value.newRfidCode
+    console.log(newRfidCode)
+  });
+
   socket.on("B2F_status_rain", function (value) {
     currentRain = value.currentRain;
     html_rain.innerHTML = `${currentRain} % regen`;
+  });
+
+  socket.on("B2F_door_opened", function () {
+    html_status_mail.innerHTML = "There is no mail at the moment"
   });
 
   socket.on("B2F_status_temp", function (value) {
@@ -157,7 +166,9 @@ document.addEventListener("DOMContentLoaded", function () {
   html_status_door = document.querySelector(".js-status-door")
   html_status_mail = document.querySelector(".js-status-mail")
   html_code = document.querySelector(".js-input-code")
+  html_new_code = document.querySelector(".js-input-new-code")
   btn_door = document.querySelector(".js-door-button")
+  btn_submit = document.querySelector(".js-code-submit")
   getTempHist();
   getRainHist();
   listenToUI();

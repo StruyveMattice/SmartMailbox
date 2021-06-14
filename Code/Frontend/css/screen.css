@@ -170,18 +170,18 @@ hr {
 }
 
 a {
-  color: #3385ff;
+  color: #27a6c2;
   transition: all 0.1s ease-in-out;
 }
 
 a:visited,
 a:active {
-  color: #4f95ff;
+  color: #15859e;
 }
 
 a:hover,
 a:focus {
-  color: #4f95ff;
+  color: #15859e;
 }
 
 /*------------------------------------*\
@@ -320,6 +320,16 @@ a:focus {
   flex-wrap: wrap;
 }
 
+.o-layout--top {
+  padding-top: 0px;
+}
+
+@media (min-width: 576px) {
+  .o-layout--top {
+    padding-top: 24px;
+  }
+}
+
 .o-layout__item {
   flex-basis: 100%;
 }
@@ -348,6 +358,7 @@ a:focus {
 
 .o-layout--gutter-lg > .o-layout__item {
   padding: 24px;
+  padding-top: 0px;
 }
 
 .o-layout--gutter-xl {
@@ -475,13 +486,25 @@ a:focus {
 \*------------------------------------*/
 
 /*
+    Component: Graph
+    ---
+    graphs
+*/
+
+/*
     Component: Form
     ---
     Website from elements
 */
 
 .c-input {
-  width: 48px;
+  width: auto;
+  margin-bottom: 8px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.c-input__new {
+  width: auto;
   margin-bottom: 8px;
   box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
 }
@@ -753,6 +776,10 @@ a:focus {
 
 .u-center {
   text-align: center;
+}
+
+.u-sm-margin {
+  margin-bottom: 16px;
 }
 
 /*
